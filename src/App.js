@@ -47,7 +47,7 @@ function App() {
   } 
 
   let handleSearch = () => {
-    fetch(`http://api.openweathermap.org/geo/1.0/direct?q=${search}&limit=1&appid=${openWeatherApi}`).then(
+    fetch(`https://api.openweathermap.org/geo/1.0/direct?q=${search}&limit=1&appid=${openWeatherApi}`).then(
       (response) => {
         return response.json()
       }).then((data) => {

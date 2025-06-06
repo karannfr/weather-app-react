@@ -2,6 +2,7 @@ import Header from './Header.js';
 import CurrentWeather from './CurrentWeather.js'
 import Forecast from './Forecast.js';
 import { useState, useEffect } from 'react';
+import Loading from './Loading.js';
 
 function App() {
   const openWeatherApi = process.env.REACT_APP_OPEN_WEATHER_API;
@@ -59,33 +60,40 @@ function App() {
   }
   
   return (
-    <div className="App">
-      <Header 
-      place={loading ? '' : weather.name}
-      date ={loading ? '' : new Date(weather.dt * 1000).toLocaleDateString('en-US', {
+  <div className="App">
+    {loading ? (
+      <Loading />
+    ) : (
+      <>
+        <Header 
+          place={weather.name}
+          date={new Date(weather.dt * 1000).toLocaleDateString('en-US', {
             weekday: 'long',
             month: 'long',
             day: 'numeric'
           })}
-      search = {search}
-      setSearch = {setSearch}
-      handleSearch = {handleSearch}
-      />
-      <main>
-        <CurrentWeather 
-          temp={loading ? '' : weather.main.temp}
-          wind={loading ? '' : weather.wind.speed }
-          humidity={loading ? '' : weather.main.humidity}
-          desc={loading ? '' : weather.weather[0].description}
+          search={search}
+          setSearch={setSearch}
+          handleSearch={handleSearch}
         />
-        <img className='image' src={loading ? '' : `https://openweathermap.org/img/wn/${weather.weather[0].icon}@4x.png`} alt="" />
-        <Forecast 
-          forecast = {forecast}
-          loading={loading}
-        />
-      </main>
-    </div>
-  );
+        <main>
+          <CurrentWeather 
+            temp={weather.main.temp}
+            wind={weather.wind.speed}
+            humidity={weather.main.humidity}
+            desc={weather.weather[0].description}
+          />
+          <img className='image' src={`https://openweathermap.org/img/wn/${weather.weather[0].icon}@4x.png`} alt="" />
+          <Forecast 
+            forecast={forecast}
+            loading={loading}
+          />
+        </main>
+      </>
+    )}
+  </div>
+);
+
 }
 
 export default App;
